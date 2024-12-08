@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jobs</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="/users">Users</a></li>
+      <li><a href="/jobs">Jobs</a></li>
+      <li><a href="/applications">Applications</a></li>
+    </ul>
+  </nav>
+
+  <h1>Job Listings</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Company</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof jobs !== 'undefined' && jobs.length > 0) { %>
+        <% jobs.forEach((job, index) => { %>
+          <tr>
+            <td><%= job.title %></td>
+            <td><%= job.description %></td>
+            <td><%= job.company %></td>
+            <td><%= job.location %></td>
+            <td class="actions">
+              <form method="post" action="/jobs/<%= job._id %>?_method=DELETE" style="display: inline">
+                <a href="/jobs/update/<%= job._id %>" class="update-button">Update</a>
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="5">No jobs found</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <h2>Add New Job</h2>
+  <form method="post" action="/jobs">
+    <label for="title">Job Title:</label>
+    <input type="text" id="title" name="title" maxlength="50" size="30" required /><br />
+    
+    <label for="company">Company:</label>
+    <input type="text" id="company" name="company" maxlength="50" size="30" required /><br />
+    
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" maxlength="50" size="30" required /><br />
+    
+    <label for="description">Job Description:</label>
+    <textarea id="description" name="description" maxlength="500" rows="4" cols="30" required></textarea><br />
+    
+    <button type="submit">Add Job</button>
+  </form>
+</body>
+</html>
