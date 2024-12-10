@@ -34,9 +34,10 @@
               action="/users/<%= index %>?_method=DELETE"
               style="display: inline"
             >
-              <a href="/users/update/<%= index %>" class="update-button"
+              <!-- <a href="/users/update/<%= index %>" class="update-button"
                 >Update</a
-              >
+              > -->
+              <a href="/users/update/<%= user._id %>" class="update-button">Update</a>
               <button type="submit">Delete</button>
             </form>
           </td>
