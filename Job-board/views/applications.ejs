@@ -14,9 +14,15 @@
       </nav>
     <h1>Applications</h1>
     <ul>
+        <% if (typeof applications !== 'undefined' && applications.length > 0) { %>
         <% applications.forEach(application => { %>
             <li><strong><%= application.jobTitle %></strong>: <%= application.applicantName %></li>
         <% }) %>
+        <% } else { %>
+            <tr>
+              <td colspan="5">No application found</td>
+            </tr>
+          <% } %>
     </ul>
     <form method="post" action="/applications">
         <label for="jobTitle">Job Title:</label>

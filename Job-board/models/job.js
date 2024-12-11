@@ -20,5 +20,13 @@ const jobSchema = new mongoose.Schema({
   },
 });
 
+
+
 const Job = mongoose.model('Job', jobSchema);
+
+
+jobSchema.index({ title: 1 });
+jobSchema.index({ company: 1});
+
 export default Job;
+

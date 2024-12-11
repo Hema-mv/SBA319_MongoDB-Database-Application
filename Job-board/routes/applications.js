@@ -1,19 +1,20 @@
-//const express = require('express');
+
 import express from 'express';
 const router = express.Router();
-//const applications=require("../data/applications")
-import applications from './applications.js';
-//let applications = [];
+import Application from '../models/application.js';
 
-router.get('/', (req, res) => {
-    res.render('applications', { applications });
-});
-
-router.post('/', (req, res) => {
-    const { jobTitle, applicantName } = req.body;
-    applications.push({ jobTitle, applicantName });
+router.get('/', async (req, res) => {
+    try {
+      const applications = await Application.find();
+      console.log(applications)
+      res.render('applications', { applications });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+router.post('/', async(req, res) => {
+    const newJob = await Application.create(req.body);
     res.redirect('/applications');
 });
 
-//module.exports = router;
 export default router;

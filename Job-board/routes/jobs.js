@@ -5,36 +5,41 @@ import Job from '../models/job.js';
 const router = express.Router();
 
 
-// Get all jobs
+
+const tmpJobs = [
+  { title: 'Software Engineer', company: 'Tech Corp', location: 'San Francisco, CA', description: 'Develop and maintain software applications.' },
+  { title: 'Product Manager', company: 'Innovate LLC', location: 'New York, NY', description: 'Manage product development and strategy.' },
+  { title: 'Data Scientist', company: 'Data Solutions', location: 'Boston, MA', description: 'Analyze and interpret complex data sets.' },
+  { title: 'UX Designer', company: 'Design Studio', location: 'Austin, TX', description: 'Create user-friendly interfaces and experiences.' },
+  { title: 'System Administrator', company: 'IT Services', location: 'Chicago, IL', description: 'Maintain and support IT systems.' }
+];
+
 router.get('/', async (req, res) => {
-  try {
-    const jobs = await Job.find();
-   // console.log(jobs)
-   res.render('jobs', { jobs });
-   // res.render('jobs');
-   // res.json(jobs);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+    try {
+        let jobs = await Job.find();
+
+        if (jobs.length === 0) {
+            console.log('No jobs found in the database. Adding temporary jobs.');
+            jobs = await Job.insertMany(tmpJobs);
+        } else {
+            console.log('Jobs found:', jobs);
+        }
+
+        res.render('jobs', { jobs });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 });
 
-// Create a new job
+
 router.post('/', async (req, res) => {
-  // const job = new Job({
-  //   title: req.body.title,
-  //   company: req.body.company,
-  //   location: req.body.location,
-  //   description: req.body.description,
-  // });
-  console.log(req.body)
   try {
-   // const newJob = await job.save();
-    const newJob = await Job.create(req.body);
-   // res.status(201).json(newJob);
+  
+   const newJob = await Job.create(req.body); 
    res.redirect('/jobs');
-   console.log(res.status)
+ 
   } catch (error) {
-    console.log(res.status)
+
     res.status(400).json({ message: error.message });
   }
 });
@@ -53,10 +58,6 @@ router.get('/:id', async (req, res) => {
 });
 router.get('/update/:id', async (req, res) => {
 
- 
-  // const { id } = req.params;
-  //   //const job = await Job.findById(req.params.id);
-  // const job = req.body;
   const job = await Job.findById(req.params.id);
   if (job) {
       res.render('EditJob', { job, jobIndex: req.params.id });
